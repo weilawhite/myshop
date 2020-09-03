@@ -34,7 +34,7 @@ public class CustomerDaoImpl implements RoleDao {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             try {
                 conn.close();
             } catch (SQLException throwables) {
@@ -45,7 +45,7 @@ public class CustomerDaoImpl implements RoleDao {
     }
 
     public boolean register(Role role) {
-        Customer customer=(Customer) role;
+        Customer customer = (Customer) role;
         String sql = "INSERT INTO `myshop`.`customers` (`name`, `password`, `phone`, `money`) VALUES (?,?,?,?);";
 
 
@@ -55,13 +55,13 @@ public class CustomerDaoImpl implements RoleDao {
             statement.setString(1, customer.getName());
             statement.setString(2, customer.getPassword());
             statement.setString(3, customer.getPhone());
-            statement.setInt(4,customer.getMoney());
+            statement.setInt(4, customer.getMoney());
             statement.execute();
 
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             try {
                 conn.close();
             } catch (SQLException throwables) {
@@ -72,7 +72,29 @@ public class CustomerDaoImpl implements RoleDao {
     }
 
     public boolean check(Role role) {
+        Customer customer = (Customer) role;
+        String sql = "select * from customers where phone = ?";
+        Connection conn = JDBCUtil.getConnection();
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, customer.getPhone());
+            ResultSet resultSet = pre.executeQuery();
+
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
         return false;
+
     }
 
     public boolean update(Role role) {
