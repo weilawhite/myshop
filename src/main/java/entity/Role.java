@@ -1,9 +1,16 @@
-package dao;
+package entity;
 
 public abstract class Role {
     protected int id;
     protected String name;
     protected String password;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Role() {
+    }
 
     public int getId() {
         return id;
